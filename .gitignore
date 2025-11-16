@@ -1,0 +1,43 @@
+# Composer
+/vendor/
+/composer.lock
+
+# Node modules if you use npm/pnpm/yarn
+/node_modules/
+
+# IDE/Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and cache
+/storage/logs/
+storage/cache/
+*.log
+*.cache
+
+# Uploaded files (optional, depends on your app)
+uploads/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# PHPStorm
+/.phpstorm.meta.php
+
+# Ignore compiled files
+*.class.php
+*.cache
+
+# Temp files
+*.tmp
+*.swp
