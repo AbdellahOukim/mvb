@@ -2,12 +2,14 @@
 
 namespace App\middlewares;
 
+use Core\Auth;
+
 class AuthMiddleware
 {
     public function handle()
     {
-        $isAuth = true;
-        if ($isAuth) {
+        $isAuth = Auth::check();
+        if (!$isAuth) {
             echo "Unautorized";
             exit;
         }

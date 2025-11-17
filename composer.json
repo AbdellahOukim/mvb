@@ -1,4 +1,14 @@
 {
+  "name": "mvb/mvb",
+  "description": "Full PHP project published as a package",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Abdellah",
+      "email": "abdo.oukim@gmail.com"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "App\\": "app/",
@@ -6,6 +16,7 @@
     }
   },
   "require": {
-    "vlucas/phpdotenv": "^5.6"
+    "vlucas/phpdotenv": "^5.6",
+    "eftec/bladeone": "^4.19"
   }
 }

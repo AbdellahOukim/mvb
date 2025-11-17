@@ -46,8 +46,8 @@ class Route
 
                 if (!class_exists($controller)) {
                     http_response_code(500);
-                    $error = "Controller $controller not found";
-                    include_once('errors/error.php');
+                    echo "Controller $controller not found";
+
                     return;
                 }
 
@@ -55,8 +55,8 @@ class Route
 
                 if (!method_exists($instance, $method)) {
                     http_response_code(404);
-                    $error = "Method $method not found in $controller";
-                    include_once('errors/error.php');
+                    echo "Method $method not found in $controller";
+
                     return;
                 }
 
@@ -66,8 +66,7 @@ class Route
         }
 
         http_response_code(404);
-        $error = "Not Found !";
-        include_once('errors/404.php');
+        echo "Not Found !";
     }
 
     private static function runMiddlewares(array $middlewares)
