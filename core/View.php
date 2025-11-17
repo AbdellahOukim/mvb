@@ -13,10 +13,16 @@ class View
         if (!self::$engine) {
             $views = dirname(__DIR__) . '/src/views';
             $cache = dirname(__DIR__) . '/storage/cache';
-            self::$engine = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
+            $blade = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
+            $blade->directive('lang', function ($expression) {
+                return "<?php echo __t($expression); ?>";
+            });
+
+            self::$engine = $blade;
         }
         return self::$engine;
     }
+
 
     public static function make(string $view, array $data = []): void
     {
