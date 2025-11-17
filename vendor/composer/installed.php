@@ -1,24 +1,15 @@
 <?php return array(
     'root' => array(
-        'name' => '__root__',
+        'name' => 'mvb/mvb',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '23171dba1069cd560b39249799962385b1d4f491',
-        'type' => 'library',
+        'reference' => '7b4560d2ae7df75d83bb7585dc7ea0f509d4e167',
+        'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        '__root__' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '23171dba1069cd560b39249799962385b1d4f491',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../../',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'eftec/bladeone' => array(
             'pretty_version' => '4.19.1',
             'version' => '4.19.1.0',
@@ -34,6 +25,15 @@
             'reference' => '3ba905c11371512af9d9bdd27d99b782216b6945',
             'type' => 'library',
             'install_path' => __DIR__ . '/../graham-campbell/result-type',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'mvb/mvb' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '7b4560d2ae7df75d83bb7585dc7ea0f509d4e167',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
