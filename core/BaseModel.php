@@ -97,7 +97,7 @@ class BaseModel
         return $this;
     }
 
-    public function go(): array
+    public function execute(): array
     {
         $columns = implode(', ', $this->cols);
         $sql = "SELECT $columns FROM {$this->table}";
