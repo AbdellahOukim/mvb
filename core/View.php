@@ -13,6 +13,11 @@ class View
         if (!self::$engine) {
             $views = dirname(__DIR__) . '/src/views';
             $cache = dirname(__DIR__) . '/storage/cache';
+
+            if (!is_dir($cache)) {
+                mkdir($cache, 0777, true);
+            }
+
             $blade = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
             $blade->directive('lang', function ($expression) {
                 return "<?php echo __t($expression); ?>";
