@@ -13,7 +13,13 @@ class Route
             'controller' => $controller,
             'middlewares' => self::$currentMiddlewares
         ];
+        uksort(self::$routes, function ($a, $b) {
+            if ($a === '/') return 1;
+            if ($b === '/') return -1;
+            return strlen($b) - strlen($a);
+        });
     }
+
 
     public static function middleware(array|string $middlewares, callable $callback)
     {
@@ -46,18 +52,16 @@ class Route
 
                 if (!class_exists($controller)) {
                     http_response_code(500);
-                    echo "Controller $controller not found";
-
-                    return;
+                    $message = "Controller $controller not found";
+                    return abort(500, $message);
                 }
 
                 $instance = new $controller;
 
                 if (!method_exists($instance, $method)) {
                     http_response_code(404);
-                    echo "Method $method not found in $controller";
-
-                    return;
+                    $message = "Method $method not found in $controller";
+                    return abort(404, $message);
                 }
 
                 call_user_func_array([$instance, $method], $params);
@@ -66,7 +70,7 @@ class Route
         }
 
         http_response_code(404);
-        echo "Not Found !";
+        return abort(404);
     }
 
     private static function runMiddlewares(array $middlewares)

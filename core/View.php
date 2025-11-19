@@ -40,7 +40,10 @@ class View
 
     public static function make(string $view, array $data = []): void
     {
-        echo self::engine()->run($view, $data);
+        if (self::exists($view))
+            echo self::engine()->run($view, $data);
+        else
+            abort(404, " View $view not found ");
     }
 
     public static function share(string $key, mixed $value): void

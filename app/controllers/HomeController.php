@@ -2,8 +2,11 @@
 
 namespace App\controllers;
 
+
 class HomeController extends Controller
 {
+    public function __construct() {}
+
 
     public function index()
     {
