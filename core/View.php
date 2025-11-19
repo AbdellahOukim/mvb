@@ -22,6 +22,15 @@ class View
             $blade->directive('lang', function ($expression) {
                 return "<?php echo __t($expression); ?>";
             });
+            $blade->directive('has_message', function ($expression) {
+                return "<?php if(isset(\$_SESSION['messages'][$expression])): " .
+                    "\$message = \$_SESSION['messages'][$expression]; ?>";
+            });
+
+            $blade->directive('end_has_message', function () {
+                return "<?php unset(\$_SESSION['messages']); endif; ?>";
+            });
+
 
             self::$engine = $blade;
         }

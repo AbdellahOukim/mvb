@@ -18,8 +18,7 @@ class BaseController
 
     protected function redirect(string $url)
     {
-        header("Location: $url");
-        exit;
+        return (new RedirectResponse($url));
     }
 
     protected function json(array $data, int $status = 200)
