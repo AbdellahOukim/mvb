@@ -6,6 +6,12 @@ function env(string $key, $default = null)
 }
 
 
+function is_route($path)
+{
+    $current = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    return rtrim($current, '/') === rtrim($path, '/');
+}
+
 function __t(string $key, array $replace = []): string
 {
     static $translations = [];
@@ -33,6 +39,18 @@ function setLang(string $locale)
 {
     $_SESSION['lang'] = $locale;
 }
+
+function isLang($lang)
+{
+    return $_SESSION['lang'] == $lang;
+}
+
+function getLang()
+{
+    return $_SESSION['lang'];
+}
+
+
 
 
 function old(string $key, $default = null)
