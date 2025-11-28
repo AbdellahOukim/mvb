@@ -1,0 +1,164 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$argv = $_SERVER['argv'];
+array_shift($argv);
+
+$command = $argv[0] ?? null;
+$argument = $argv[1] ?? null;
+
+$options = [];
+foreach ($argv as $arg) {
+    if (str_starts_with($arg, '--')) {
+        $parts = explode('=', substr($arg, 2), 2);
+        $options[$parts[0]] = $parts[1] ?? true;
+    }
+}
+
+function makeDir($path)
+{
+    if (!is_dir($path)) mkdir($path, 0777, true);
+}
+
+function writeFile($path, $content)
+{
+    makeDir(dirname($path));
+    file_put_contents($path, $content);
+    echo "Created: $path\n";
+}
+
+function deleteDir($dir)
+{
+    if (!is_dir($dir)) return;
+    $files = array_diff(scandir($dir), ['.', '..']);
+    foreach ($files as $file) {
+        $path = "$dir/$file";
+        if (is_dir($path)) deleteDir($path);
+        else unlink($path);
+    }
+    rmdir($dir);
+    echo "Deleted: $dir\n";
+}
+
+switch ($command) {
+
+    case 'create:model':
+        if (!$argument) {
+            echo "Model name required\n";
+            exit;
+        }
+        $name = ucfirst($argument);
+        $table = $options['table'] ?? strtolower($name) . 's';
+        $content = "<?php
+
+namespace App\models;
+
+use Core\BaseModel;
+
+class $name extends BaseModel
+{
+    public \$table = '$table';
+}
+";
+        writeFile(__DIR__ . "/app/models/$name.php", $content);
+        break;
+
+    case 'create:controller':
+        if (!$argument) {
+            echo "Controller name required\n";
+            exit;
+        }
+        $name = ucfirst($argument);
+        $content = "<?php
+
+namespace App\controllers;
+
+use Core\Controller;
+
+class $name extends Controller
+{
+    public function index()
+    {
+        return view('{$argument}.index');
+    }
+}
+";
+        writeFile(__DIR__ . "/app/controllers/$name.php", $content);
+        break;
+
+    case 'create:policy':
+        if (!$argument) {
+            echo "Policy name required\n";
+            exit;
+        }
+        $name = ucfirst($argument);
+        $content = "<?php
+
+namespace App\policies;
+
+class $name
+{
+    public function view(\$user) { return false; }
+    public function create(\$user) { return false; }
+    public function update(\$user) { return false; }
+    public function delete(\$user) { return false; }
+}
+";
+        writeFile(__DIR__ . "/app/policies/$name.php", $content);
+        break;
+
+    case 'create:seeder':
+        if (!$argument) {
+            echo "Seeder name required\n";
+            exit;
+        }
+        $name = ucfirst($argument);
+        $content = "<?php
+
+namespace App\seeders;
+
+use Core\Database;
+
+class $name
+{
+    public function run()
+    {
+    }
+}
+";
+        writeFile(__DIR__ . "/app/seeders/$name.php", $content);
+        break;
+
+    case 'run:seeder':
+        if (!$argument) {
+            echo "Seeder name required\n";
+            exit;
+        }
+        $name = ucfirst($argument);
+        $class = "App\\seeders\\$name";
+        if (!class_exists($class)) {
+            echo "Seeder not found: $name\n";
+            exit;
+        }
+        $seeder = new $class();
+        $seeder->run();
+        echo "$name executed\n";
+        break;
+
+    case 'delete:cache':
+        $cachePaths = [
+            __DIR__ . '/storage/cache',
+            __DIR__ . '/storage/views',
+            __DIR__ . '/storage/framework/cache'
+        ];
+        foreach ($cachePaths as $path) {
+            if (is_dir($path)) deleteDir($path);
+        }
+        echo "Cache cleared\n";
+        break;
+
+    default:
+        echo "Unknown command\n";
+}
