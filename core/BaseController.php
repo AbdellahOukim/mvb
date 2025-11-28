@@ -8,7 +8,8 @@ class BaseController
 
     public function __construct()
     {
-        $this->param = array_merge($_GET, $_POST, $_FILES);
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $this->param = array_merge($_GET, $_POST, $_FILES, $data);
     }
 
     protected function view($view, $param = [])

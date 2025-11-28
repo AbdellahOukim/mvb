@@ -30,4 +30,11 @@ class Database
 
         return self::$pdo;
     }
+
+    public static function query(string $sql, array $params = [])
+    {
+        $stmt = self::connect()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
 }

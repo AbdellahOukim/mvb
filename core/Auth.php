@@ -16,10 +16,9 @@ class Auth
         }
 
         $userModel = new User();
-        $user = $userModel->find("email = '{$credentials['email']}'", ['*']);
-        $user = $user[0] ?? null;
-
+        $user = $userModel->find()->where("email = '{$credentials['email']}'")->first();
         if ($user && password_verify($credentials['password'], $user['password'])) {
+            setLang("fr");
             $_SESSION[self::$sessionKey] = $user['id'];
             self::$user = $userModel->findOne($user['id']);
             return true;

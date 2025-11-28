@@ -70,17 +70,58 @@ function can(string $policy, string $method, $resource = []): bool
 }
 
 
-function abort(int $code = 404, $message = "")
+function abort(int $code = 404, string $message = "")
 {
     http_response_code($code);
-
-    $errorFile = __DIR__ . "/errors/{$code}.php";
-
-    if (file_exists($errorFile)) {
-        include $errorFile;
-    } else {
-        echo $message ?? "Error $code";
+    $bladePath = dirname(__DIR__) . "/src/views/errors/{$code}.blade.php";
+    if (file_exists($bladePath)) {
+        echo \Core\View::make("errors.$code");
+        exit;
     }
+    $phpErrorFile = __DIR__ . "/errors/{$code}.php";
+    if (file_exists($phpErrorFile)) {
+        include $phpErrorFile;
+        exit;
+    }
+    echo $message ?: "Error $code";
+    exit;
+}
 
+
+function redirect(string $url, int $status = 302)
+{
+    http_response_code($status);
+    header("Location: $url");
+    exit;
+}
+
+
+
+function format_table($array)
+{
+    echo "<pre>";
+    print_r($array);
+    echo "</pre>";
+}
+
+function format_number($number, $decimal = 2)
+{
+    if ($number == "") return 0;
+    return number_format($number, $decimal, ',', ' ');
+}
+
+function format_date($date, $format = 'd/m/Y')
+{
+    if (!$date) return null;
+    $timestamp = strtotime($date);
+    return date($format, $timestamp);
+}
+
+
+function  json(array $data, int $status = 200)
+{
+    http_response_code($status);
+    header('Content-Type: application/json');
+    echo json_encode($data);
     exit;
 }

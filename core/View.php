@@ -28,10 +28,9 @@ class View
             });
 
             $blade->directive('end_has_message', function () {
-                return "<?php unset(\$_SESSION['messages']); endif; ?>";
+                return "<?php endif; ?>";
             });
-
-
+            $blade->share('authUser', Auth::user());
             self::$engine = $blade;
         }
         return self::$engine;
@@ -40,9 +39,10 @@ class View
 
     public static function make(string $view, array $data = []): void
     {
-        if (self::exists($view))
+        if (self::exists($view)) {
             echo self::engine()->run($view, $data);
-        else
+            unset($_SESSION['messages']);
+        } else
             abort(404, " View $view not found ");
     }
 
